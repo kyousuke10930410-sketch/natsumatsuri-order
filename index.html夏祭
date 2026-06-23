@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>夏祭り 前売り注文フォーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF3E4;
+    --surface:#FFFFFF;
+    --ink:#28323D;
+    --ink-soft:#6B6457;
+    --line:#E8DCC4;
+    --red:#D8472E;
+    --red-deep:#B53A24;
+    --gold:#E8A23D;
+    --gold-deep:#C9821F;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans JP', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    padding-bottom:96px;
+  }
+  header{
+    padding:28px 20px 22px;
+    text-align:center;
+    position:relative;
+  }
+  .lantern{
+    width:34px;height:42px;
+    margin:0 auto 10px;
+    background: radial-gradient(circle at 50% 40%, var(--gold) 0%, var(--red) 75%);
+    border-radius:50% 50% 45% 45%;
+    position:relative;
+  }
+  .lantern::before, .lantern::after{
+    content:'';
+    position:absolute;
+    background:var(--red-deep);
+    left:50%;
+    transform:translateX(-50%);
+  }
+  .lantern::before{ top:-4px; width:18px; height:4px; border-radius:2px; }
+  .lantern::after{ bottom:-10px; width:2px; height:10px; }
+  h1{
+    font-family:'Zen Maru Gothic', sans-serif;
+    font-weight:900;
+    font-size:22px;
+    margin:0 0 4px;
+    letter-spacing:.02em;
+  }
+  .sub{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  main{
+    max-width:480px;
+    margin:0 auto;
+    padding:0 14px;
+  }
+  .notice{
+    background:#FFF7E8;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    font-size:13px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+  .notice strong{ color:var(--red-deep); }
+  .field-card{
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 10px rgba(40,50,61,0.05);
+  }
+  label.field-label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  input[type=text]{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 12px;
+    font-size:16px;
+    font-family:inherit;
+    background:#FFFDF9;
+    color:var(--ink);
+  }
+  input[type=text]:focus{ outline:2px solid var(--gold); border-color:var(--gold); }
+  .two-col{ display:flex; gap:10px; }
+  .two-col .field-card{ flex:1; }
+
+  .section-title{
+    font-family:'Zen Maru Gothic', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--ink-soft);
+    margin:22px 4px 8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-title::before{
+    content:'';
+    width:8px;height:8px;
+    background:var(--red);
+    border-radius:50%;
+    flex:none;
+  }
+
+  .item-card{
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-bottom:10px;
+    box-shadow:0 2px 10px rgba(40,50,61,0.05);
+    border:1px dashed transparent;
+  }
+  .item-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:10px;
+  }
+  .item-name{
+    font-family:'Zen Maru Gothic', sans-serif;
+    font-weight:700;
+    font-size:15px;
+  }
+  .item-price{
+    font-size:13px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .item-note{
+    font-size:11.5px;
+    color:var(--red-deep);
+    margin-top:4px;
+    font-weight:500;
+  }
+  .item-bottom{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    margin-top:10px;
+    gap:2px;
+  }
+  .popcorn-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 0;
+    border-top:1px dashed var(--line);
+  }
+  .popcorn-row:first-of-type{ border-top:none; margin-top:2px; }
+  .popcorn-label{ font-size:13.5px; }
+
+  .stepper{
+    display:flex;
+    align-items:center;
+    background:#FBF3E4;
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .stepper button{
+    width:38px;height:38px;
+    border:none;
+    background:transparent;
+    font-size:20px;
+    font-weight:700;
+    color:var(--red-deep);
+    cursor:pointer;
+    line-height:1;
+  }
+  .stepper button:active{ background:rgba(216,71,46,0.12); }
+  .stepper input{
+    width:40px;
+    border:none;
+    background:transparent;
+    text-align:center;
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+    font-family:inherit;
+  }
+  .stepper .unit{
+    font-size:11px;
+    color:var(--ink-soft);
+    padding-right:10px;
+  }
+
+  .footer-bar{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    background:var(--surface);
+    border-top:1px solid var(--line);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    box-shadow:0 -4px 16px rgba(40,50,61,0.08);
+  }
+  .total-block{ line-height:1.2; }
+  .total-label{ font-size:11px; color:var(--ink-soft); }
+  .total-amount{
+    font-family:'Zen Maru Gothic', sans-serif;
+    font-weight:900;
+    font-size:22px;
+    color:var(--red-deep);
+  }
+  .submit-btn{
+    background:var(--red);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:14px 26px;
+    font-size:15px;
+    font-weight:700;
+    font-family:'Zen Maru Gothic', sans-serif;
+    cursor:pointer;
+    flex:none;
+  }
+  .submit-btn:active{ background:var(--red-deep); }
+  .submit-btn:disabled{ background:#CFC6B4; cursor:default; }
+
+  .error-msg{
+    color:var(--red-deep);
+    font-size:12.5px;
+    margin-top:6px;
+    display:none;
+  }
+
+  #thanksScreen{
+    display:none;
+    max-width:480px;
+    margin:40px auto;
+    padding:0 20px;
+    text-align:center;
+  }
+  #thanksScreen h2{
+    font-family:'Zen Maru Gothic', sans-serif;
+    font-size:20px;
+  }
+  .recap{
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:18px;
+    text-align:left;
+    margin-top:18px;
+    box-shadow:0 2px 10px rgba(40,50,61,0.05);
+  }
+  .recap-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .recap-row:last-child{ border-bottom:none; }
+  .recap-total{
+    display:flex;
+    justify-content:space-between;
+    font-weight:700;
+    font-size:17px;
+    margin-top:10px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+    color:var(--red-deep);
+  }
+  .recap-note{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:16px;
+    line-height:1.7;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="lantern"></div>
+  <h1>夏祭り 前売り注文</h1>
+  <p class="sub">大八保育園 保護者会</p>
+</header>
+
+<main id="formScreen">
+
+  <div class="notice">
+    数量を入力して最後に<strong>「この内容で申し込む」</strong>を押してください。<br>
+    お支払いは<strong>現金</strong>で、お子さまを通じて保育園に提出してください(締切：<strong id="deadlineText">6月19日(金)</strong>)。
+  </div>
+
+  <div class="field-card">
+    <label class="field-label">保護者氏名</label>
+    <input type="text" id="parentName" placeholder="例）山田 花子">
+  </div>
+  <div class="two-col">
+    <div class="field-card">
+      <label class="field-label">園児氏名</label>
+      <input type="text" id="childName" placeholder="例）山田 太郎">
+    </div>
+    <div class="field-card">
+      <label class="field-label">クラス</label>
+      <input type="text" id="className" placeholder="例）ひまわり組">
+    </div>
+  </div>
+  <div class="error-msg" id="nameError">保護者氏名・園児氏名・クラスを入力してください。</div>
+
+  <div class="section-title">フード・ドリンク</div>
+
+  <div class="item-card" data-key="kakigori" data-price="250" data-unit="杯">
+    <div class="item-top"><span class="item-name">🍧 かき氷</span><span class="item-price">1杯 250円</span></div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">杯</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card" data-key="juice" data-price="150" data-unit="本">
+    <div class="item-top"><span class="item-name">🧃 ジュース各種</span><span class="item-price">1本 150円</span></div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">本</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card" data-key="tea" data-price="100" data-unit="本">
+    <div class="item-top"><span class="item-name">🍵 お茶(ペットボトル)</span><span class="item-price">1本 100円</span></div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">本</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card" data-key="takoyaki" data-price="500" data-unit="個" data-max="1">
+    <div class="item-top"><span class="item-name">🐙 たこ焼き(6個)</span><span class="item-price">1個 500円</span></div>
+    <div class="item-note">※一家族1個まで</div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">個</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card" data-key="chocoBanana" data-price="350" data-unit="本">
+    <div class="item-top"><span class="item-name">🍫 チョコバナナ</span><span class="item-price">1本 350円</span></div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">本</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-top"><span class="item-name">🍢 焼き鳥(4本入り)</span><span class="item-price">1セット 600円</span></div>
+    <div class="popcorn-row" data-key="yakitoriTare" data-price="600" data-unit="セット">
+      <span class="popcorn-label">タレ</span>
+      <div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">セット</span><button type="button" data-act="plus">＋</button></div>
+    </div>
+    <div class="popcorn-row" data-key="yakitoriShio" data-price="600" data-unit="セット">
+      <span class="popcorn-label">塩</span>
+      <div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">セット</span><button type="button" data-act="plus">＋</button></div>
+    </div>
+  </div>
+
+  <div class="item-card" data-key="dango" data-price="400" data-unit="個" data-max="1">
+    <div class="item-top"><span class="item-name">🍡 だんご(5本)</span><span class="item-price">1個 400円</span></div>
+    <div class="item-note">※一家族1個まで</div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">個</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card">
+    <div class="item-top"><span class="item-name">🍿 ポップコーン</span><span class="item-price">各450円</span></div>
+    <div class="popcorn-row" data-key="popcornShio" data-price="450" data-unit="個">
+      <span class="popcorn-label">旨塩</span>
+      <div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">個</span><button type="button" data-act="plus">＋</button></div>
+    </div>
+    <div class="popcorn-row" data-key="popcornCaramel" data-price="450" data-unit="個">
+      <span class="popcorn-label">キャラメル</span>
+      <div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">個</span><button type="button" data-act="plus">＋</button></div>
+    </div>
+    <div class="popcorn-row" data-key="popcornChoco" data-price="450" data-unit="個">
+      <span class="popcorn-label">チョコ</span>
+      <div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">個</span><button type="button" data-act="plus">＋</button></div>
+    </div>
+  </div>
+
+  <div class="item-card" data-key="beer" data-price="250" data-unit="本">
+    <div class="item-top"><span class="item-name">🍺 缶ビール(350ml)</span><span class="item-price">1本 250円</span></div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">本</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="section-title">おもちゃ・ゲーム</div>
+
+  <div class="item-card" data-key="toy" data-price="200" data-unit="個">
+    <div class="item-top"><span class="item-name">✨ 光るおもちゃ</span><span class="item-price">1個 200円</span></div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">個</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+  <div class="item-card" data-key="ticket" data-price="600" data-unit="回">
+    <div class="item-top"><span class="item-name">🎯 お楽しみ券(ゲーム+景品)</span><span class="item-price">1回 600円</span></div>
+    <div class="item-note">※在園児は無料</div>
+    <div class="item-bottom"><div class="stepper"><button type="button" data-act="minus">−</button><input type="text" inputmode="numeric" value="0" readonly><span class="unit">回</span><button type="button" data-act="plus">＋</button></div></div>
+  </div>
+
+</main>
+
+<div class="footer-bar">
+  <div class="total-block">
+    <div class="total-label">合計金額</div>
+    <div class="total-amount" id="totalAmount">¥0</div>
+  </div>
+  <button class="submit-btn" id="submitBtn">この内容で申し込む</button>
+</div>
+
+<div id="thanksScreen">
+  <div class="lantern" style="margin:0 auto 14px;"></div>
+  <h2>ご注文ありがとうございました</h2>
+  <p class="sub" id="thanksName"></p>
+  <div class="recap" id="recapBox"></div>
+  <div class="recap-note">
+    内容は保護者会に送信されました。<br>
+    現金は上記の合計金額をお子さまを通じて<strong>締切日まで</strong>に保育園へご提出ください。<br>
+    入力内容を間違えた場合は、もう一度フォームを開いて再送信してください(最新の内容で集計します)。
+  </div>
+</div>
+
+<script>
+// ───────────────────────────────────────────
+// 設定: Apps Script の Web App URL をここに貼り付けてください
+// ───────────────────────────────────────────
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxnV9SHSSVF4lbYK667ehVo6eV6KTLnoHTqJ_-BnJ3of1soXqfXojQ5UJDpKqJLwiRTIw/exec";
+
+const ITEM_LABELS = {
+  kakigori: "かき氷", juice: "ジュース各種", tea: "お茶(ペットボトル)",
+  takoyaki: "たこ焼き", chocoBanana: "チョコバナナ", yakitoriTare: "焼き鳥(タレ)", yakitoriShio: "焼き鳥(塩)",
+  dango: "だんご", popcornShio: "ポップコーン(旨塩)", popcornCaramel: "ポップコーン(キャラメル)",
+  popcornChoco: "ポップコーン(チョコ)", beer: "缶ビール", toy: "光るおもちゃ", ticket: "お楽しみ券"
+};
+
+function fmtYen(n){ return "¥" + n.toLocaleString(); }
+
+function getAllItemNodes(){
+  return document.querySelectorAll('[data-key]');
+}
+
+function recalcTotal(){
+  let total = 0;
+  getAllItemNodes().forEach(node => {
+    const price = parseInt(node.dataset.price, 10);
+    const input = node.querySelector('input[type=text][readonly]');
+    const qty = parseInt(input.value, 10) || 0;
+    total += price * qty;
+  });
+  document.getElementById('totalAmount').textContent = fmtYen(total);
+  return total;
+}
+
+getAllItemNodes().forEach(node => {
+  const input = node.querySelector('input[type=text][readonly]');
+  const max = node.dataset.max ? parseInt(node.dataset.max, 10) : 99;
+  node.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let val = parseInt(input.value, 10) || 0;
+      if (btn.dataset.act === 'plus' && val < max) val++;
+      if (btn.dataset.act === 'minus' && val > 0) val--;
+      input.value = val;
+      recalcTotal();
+    });
+  });
+});
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const parentName = document.getElementById('parentName').value.trim();
+  const childName = document.getElementById('childName').value.trim();
+  const className = document.getElementById('className').value.trim();
+  const errorEl = document.getElementById('nameError');
+
+  if (!parentName || !childName || !className) {
+    errorEl.style.display = 'block';
+    document.getElementById('parentName').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  errorEl.style.display = 'none';
+
+  const total = recalcTotal();
+  const payload = { parentName, childName, className, total };
+  getAllItemNodes().forEach(node => {
+    const input = node.querySelector('input[type=text][readonly]');
+    payload[node.dataset.key] = parseInt(input.value, 10) || 0;
+  });
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  fetch(WEBAPP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => showThanks(payload))
+  .catch(() => {
+    alert('送信に失敗しました。通信環境をご確認のうえ、もう一度お試しください。');
+    btn.disabled = false;
+    btn.textContent = 'この内容で申し込む';
+  });
+});
+
+function showThanks(payload){
+  document.getElementById('formScreen').style.display = 'none';
+  document.querySelector('.footer-bar').style.display = 'none';
+  document.getElementById('thanksScreen').style.display = 'block';
+  document.getElementById('thanksName').textContent =
+    `${payload.className} ${payload.childName} さま（保護者：${payload.parentName} さま）`;
+
+  let rows = '';
+  Object.keys(ITEM_LABELS).forEach(key => {
+    if (payload[key] > 0) {
+      rows += `<div class="recap-row"><span>${ITEM_LABELS[key]} × ${payload[key]}</span></div>`;
+    }
+  });
+  document.getElementById('recapBox').innerHTML =
+    rows + `<div class="recap-total"><span>合計金額</span><span>${fmtYen(payload.total)}</span></div>`;
+
+  window.scrollTo(0,0);
+}
+</script>
+
+</body>
+</html>
