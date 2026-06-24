@@ -103,6 +103,24 @@
     color:var(--ink);
   }
   input[type=text]:focus{ outline:2px solid var(--gold); border-color:var(--gold); }
+  select{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 12px;
+    font-size:16px;
+    font-family:inherit;
+    background:#FFFDF9;
+    color:var(--ink);
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%236B6457' d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 10px center;
+    background-size:20px;
+  }
+  select:focus{ outline:2px solid var(--gold); border-color:var(--gold); }
+  select:invalid{ color:var(--ink-soft); }
   .two-col{ display:flex; gap:10px; }
   .two-col .field-card{ flex:1; }
 
@@ -319,10 +337,16 @@
     </div>
     <div class="field-card">
       <label class="field-label">クラス</label>
-      <input type="text" id="className" placeholder="例）ひまわり組">
+      <select id="className">
+        <option value="" disabled selected>選択してください</option>
+        <option value="くま">くま</option>
+        <option value="うさぎ">うさぎ</option>
+        <option value="ぞう">ぞう</option>
+        <option value="未満児">未満児</option>
+      </select>
     </div>
   </div>
-  <div class="error-msg" id="nameError">保護者氏名・園児氏名・クラスを入力してください。</div>
+  <div class="error-msg" id="nameError">保護者氏名・園児氏名を入力し、クラスを選択してください。</div>
 
   <div class="section-title">フード・ドリンク</div>
 
